@@ -32,11 +32,27 @@ void clearPlayer(unsigned char player)
 
 unsigned char movePlayer(unsigned char player, unsigned char direction)
 {
-        switch (direction) {
-                //
-                // update player position based on direction of movement
-                //
+
+	//TODO needs to clear screen, update player position, print player,
+	//reset timer
+	LCDclear();
+
+        if(direction == 1){
+        	player ++;
         }
+        else if(direction == 2){
+        	player--;
+        }
+        else if(direction == 3){
+        	player += 100;
+        }
+        else if(direction == 4){
+        	player -= 100;
+        }
+
+        printPlayer(player);
+
+
 
         return player;
 }
