@@ -12,6 +12,7 @@
 
 #include "Interupts.h"
 #include "LCD/lcd.h"
+#include <msp430.h>
 
 unsigned char initPlayer()
 {
@@ -30,29 +31,35 @@ void clearPlayer(unsigned char player)
         writeDataByte(' ');
 }
 
+#define ROW_MASK 0x40
+
 unsigned char movePlayer(unsigned char player, unsigned char direction)
 {
 
 	//TODO needs to clear screen, update player position, print player,
 	//reset timer
-	LCDclear();
+		clearPlayer(player);
 
-        if(direction == 1){
-        	player ++;
+        if(direction == BIT1){
+        	if(player != 0x87 && player != 0xc7){
+        		player++;
+        	}
+
         }
-        else if(direction == 2){
-        	player--;
+        else if(direction == BIT2){
+        	if(player != 0x80 && player != 0xc0){
+        		player--;
+        	}
+
         }
-        else if(direction == 3){
-        	player += 100;
+        else if(direction == BIT3){
+        	player &= ~ROW_MASK;
         }
-        else if(direction == 4){
-        	player -= 100;
+        else if(direction == BIT4){
+        	player |= ROW_MASK;
         }
 
         printPlayer(player);
-
-
 
         return player;
 }
