@@ -51,23 +51,6 @@ int main(void)
         {
         	LCDclear();
         	printPlayer(player);
-                /*
-                 * while (game is on)
-                 * {
-                 *                 check if button is pushed (you don't want to block here, so don't poll!)
-                 *                 if button is pushed:
-                 *                         clear current player marker
-                 *                         update player position based on direction
-                 *                         print new player
-                 *                         clear two second timer
-                 *                         wait for button release (you can poll here)
-                 * }
-                 *
-                 * print game over or you won, depending on game result
-                 *
-                 * wait for button press to begin new game (you can poll here)
-                 * wait for release before starting again
-                 */
 
         	while(GAMEON){
         		LCDclear();
