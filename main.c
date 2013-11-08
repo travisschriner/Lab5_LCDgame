@@ -49,14 +49,13 @@ int main(void)
 
         while(1)
         {
+        	//clears the screen again and prints player
         	LCDclear();
         	printPlayer(player);
 
+        	//only works if GAMEON is 1. This is when I have not lost
         	while(GAMEON){
-        		LCDclear();
-        		printPlayer(player);
-
-
+        		//tests if my P1 interrupt has been tripped.
         		if(HIT){
         			HIT = 0;
         			flag = 0;
@@ -64,6 +63,7 @@ int main(void)
         		    TACTL |= TACLR;
         		}
 
+        		//checks if I have won the game. If so, executes win logic and waits for a button to get pressed
         		if(didPlayerWin(player)){
         			GAMEON = 0;
         			gameWon();
@@ -71,8 +71,10 @@ int main(void)
         			while(!GAMEON){
 
         			}
+        			LCDclear();
         		}
 
+        	//If I leave the GAMEON loop, this loop will execute that will execute gameOver() logic. Sits in holding pattern until button is hit.
         	}
 
         	if(!GAMEON){
@@ -86,6 +88,7 @@ int main(void)
         return 0;
 }
 
+//timer interrupt that will disable game after 2 seconds
 #pragma vector=TIMER0_A1_VECTOR
 __interrupt void TIMER0_A1_ISR()
 {
@@ -97,6 +100,7 @@ __interrupt void TIMER0_A1_ISR()
     }
 }
 
+//code given from Capt Branch to test button and assign if button was hit and which one hit
 void testAndRespondToButtonPush(char buttonToTest)
 {
     if (buttonToTest & P1IFG)
@@ -105,14 +109,9 @@ void testAndRespondToButtonPush(char buttonToTest)
         {
         	GAMEON = 1;
 	        P1IFG &= ~buttonToTest;                            // clear flag
-	       //TODO set button direction
 	        BUTTON = buttonToTest;
 	        HIT = 1;
-
-            //movePlayerInResponseToButtonPush(buttonToTest);
-            //clearTimer();
-        } else
-        {
+        } else {
             __delay_cycles(1000);
         }
 
@@ -121,6 +120,7 @@ void testAndRespondToButtonPush(char buttonToTest)
     }
 }
 
+//this is my interrupt logic for a button push.
 #pragma vector = PORT1_VECTOR
 __interrupt void Port_1(void){
 
@@ -129,10 +129,8 @@ __interrupt void Port_1(void){
 	testAndRespondToButtonPush(BIT3);
 	testAndRespondToButtonPush(BIT4);
 }
-//
-// YOUR TIMER A ISR GOES HERE
-//
 
+//This sets up my timer interrupt and assigns bits appropriately.
 void init_timer()
 {
         // do timer initialization work
@@ -152,6 +150,7 @@ void init_timer()
     TACTL |= TAIE;              // enable interrupt
 }
 
+//this sets up my buttons on P1 and sets bits accordingly
 void init_buttons()
 {
 	 P1DIR &= ~(BIT1|BIT2|BIT3|BIT4);                // set buttons to input

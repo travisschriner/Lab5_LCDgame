@@ -49,12 +49,6 @@ unsigned char movePlayer(unsigned char player, unsigned char direction);
 //
 char didPlayerWin(unsigned char player);
 
-/*
- * Functions which may prove useful in achieving A-Functionality.
- *
-char didPlayerHitMine(unsigned char player, unsigned char mines[NUM_MINES]);
-void generateMines(unsigned char mines[NUM_MINES]);
-void printMines(unsigned char mines[NUM_MINES]);
-*/
+
 
 #endif /* INTERUPTS_H_ */
